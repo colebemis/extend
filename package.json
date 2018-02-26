@@ -9,6 +9,9 @@
   },
   "author": "Cole Bemis <cole@colebemis.com>",
   "license": "MIT",
+  "dependencies": {
+    "prop-types": "^15.6.0"
+  },
   "devDependencies": {
     "babel-core": "^6.26.0",
     "babel-loader": "^7.1.3",

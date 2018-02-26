@@ -1,7 +1,16 @@
 import React, { Component } from 'react'
+import { shape, func } from 'prop-types'
 import { render } from 'react-dom'
 
 class App extends Component {
+  static propTypes = {
+    chrome: shape({
+      management: shape({
+        getAll: func.isRequired,
+      }).isRequired,
+    }).isRequired,
+  }
+
   state = {
     loading: true,
     extensions: [],
