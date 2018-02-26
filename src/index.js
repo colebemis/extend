@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { shape, func } from 'prop-types'
+import sortBy from 'lodash/sortBy'
 import { render } from 'react-dom'
 
 class App extends Component {
@@ -7,6 +8,7 @@ class App extends Component {
     chrome: shape({
       management: shape({
         getAll: func.isRequired,
+        setEnabled: func.isRequired,
       }).isRequired,
     }).isRequired,
   }
@@ -17,25 +19,48 @@ class App extends Component {
   }
 
   componentDidMount() {
-    this.props.chrome.management.getAll(extensions =>
+    const { chrome } = this.props
+
+    chrome.management.getAll(extensions =>
       this.setState({
         loading: false,
-        extensions,
+        extensions: sortBy(extensions, 'shortName'),
       }),
     )
   }
 
+  handleCheckboxChange = (id, checked) => {
+    const { chrome } = this.props
+    const { extensions } = this.state
+
+    chrome.management.setEnabled(id, checked, () => {
+      this.setState({
+        extensions: extensions.map(
+          extension =>
+            extension.id === id
+              ? { ...extension, ...{ enabled: checked } }
+              : extension,
+        ),
+      })
+    })
+  }
+
   render() {
+    const { extensions } = this.state
+
     return (
       <div style={{ width: 360 }}>
-        {this.state.extensions.map(extension => (
-          <div key={extension.id}>
+        {extensions.map(({ id, enabled, shortName }) => (
+          <div key={id}>
             <input
-              id={extension.id}
+              id={id}
               type="checkbox"
-              checked={extension.enabled}
+              checked={enabled}
+              onChange={event =>
+                this.handleCheckboxChange(id, event.target.checked)
+              }
             />
-            <label htmlFor={extension.id}>{extension.shortName}</label>
+            <label htmlFor={id}>{shortName}</label>
           </div>
         ))}
       </div>
