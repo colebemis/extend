@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
+import { render } from 'react-dom'
 import { shape, func } from 'prop-types'
 import sortBy from 'lodash/sortBy'
-import { render } from 'react-dom'
+import Fuse from 'fuse.js'
 
 class App extends Component {
   static propTypes = {
@@ -15,13 +16,12 @@ class App extends Component {
 
   state = {
     loading: true,
+    query: '',
     extensions: [],
   }
 
   componentDidMount() {
-    const { chrome } = this.props
-
-    chrome.management.getAll(extensions =>
+    this.props.chrome.management.getAll(extensions =>
       this.setState({
         loading: false,
         extensions: sortBy(extensions, 'shortName'),
@@ -29,40 +29,66 @@ class App extends Component {
     )
   }
 
-  handleCheckboxChange = (id, checked) => {
-    const { chrome } = this.props
-    const { extensions } = this.state
+  handleQueryChange = query => this.setState({ query })
 
-    chrome.management.setEnabled(id, checked, () => {
+  handleEnabledChange = (id, enabled) => {
+    this.props.chrome.management.setEnabled(id, enabled, () => {
       this.setState({
-        extensions: extensions.map(
+        extensions: this.state.extensions.map(
           extension =>
-            extension.id === id
-              ? { ...extension, ...{ enabled: checked } }
-              : extension,
+            extension.id === id ? { ...extension, ...{ enabled } } : extension,
         ),
       })
     })
   }
 
+  searchExtensions = (extensions, query) => {
+    if (query === '') {
+      return extensions
+    }
+
+    const options = {
+      threshold: 0.5,
+      keys: ['name', 'shortName', 'description'],
+    }
+
+    const fuse = new Fuse(extensions, options)
+
+    return fuse.search(query)
+  }
+
   render() {
-    const { extensions } = this.state
+    const extensions = this.searchExtensions(
+      this.state.extensions,
+      this.state.query,
+    )
 
     return (
       <div style={{ width: 360 }}>
-        {extensions.map(({ id, enabled, shortName }) => (
-          <div key={id}>
-            <input
-              id={id}
-              type="checkbox"
-              checked={enabled}
-              onChange={event =>
-                this.handleCheckboxChange(id, event.target.checked)
-              }
-            />
-            <label htmlFor={id}>{shortName}</label>
-          </div>
-        ))}
+        <input
+          type="search"
+          value={this.state.query}
+          placeholder="Search"
+          onChange={event => this.handleQueryChange(event.target.value)}
+          style={{ width: '100%' }}
+        />
+        {!this.state.loading && extensions.length === 0 ? (
+          <div>No matches found.</div>
+        ) : (
+          extensions.map(({ id, enabled, shortName }) => (
+            <div key={id}>
+              <input
+                id={id}
+                type="checkbox"
+                checked={enabled}
+                onChange={event =>
+                  this.handleEnabledChange(id, event.target.checked)
+                }
+              />
+              <label htmlFor={id}>{shortName}</label>
+            </div>
+          ))
+        )}
       </div>
     )
   }
