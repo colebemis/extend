@@ -66,7 +66,7 @@ class App extends Component {
     return (
       <div style={{ width: 360 }}>
         <input
-          type="search"
+          type="text"
           value={this.state.query}
           placeholder="Search"
           onChange={event => this.handleQueryChange(event.target.value)}
