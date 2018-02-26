@@ -1,7 +1,7 @@
 {
-  "name": "extension-manager",
+  "name": "extend",
   "version": "0.0.0",
-  "description": "",
+  "description": "Manage your Chrome extensions from the toolbar",
   "scripts": {
     "start": "webpack --mode development --watch",
     "build": "webpack --mode production",

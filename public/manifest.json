@@ -1,7 +1,8 @@
 {
   "manifest_version": 2,
-  "name": "Extension Manager",
+  "name": "Extend",
   "version": "0.1.0",
+  "description": "Manage your Chrome extensions from the toolbar",
   "browser_action": {
     "default_popup": "popup.html"
   },
