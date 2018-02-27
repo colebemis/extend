@@ -3,6 +3,7 @@ import { render } from 'react-dom'
 import { shape, func } from 'prop-types'
 import sortBy from 'lodash/sortBy'
 import Fuse from 'fuse.js'
+import Checkbox from './components/Checkbox'
 
 class App extends Component {
   static propTypes = {
@@ -76,17 +77,15 @@ class App extends Component {
           <div>No matches found.</div>
         ) : (
           extensions.map(({ id, enabled, shortName }) => (
-            <div key={id}>
-              <input
-                id={id}
-                type="checkbox"
+            <label key={id}>
+              <Checkbox
                 checked={enabled}
                 onChange={event =>
                   this.handleEnabledChange(id, event.target.checked)
                 }
               />
-              <label htmlFor={id}>{shortName}</label>
-            </div>
+              <span>{shortName}</span>
+            </label>
           ))
         )}
       </div>
