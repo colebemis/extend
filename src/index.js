@@ -1,8 +1,10 @@
 import React, { Component } from 'react'
 import { render } from 'react-dom'
 import { shape, func } from 'prop-types'
+import { ThemeProvider } from 'styled-components'
 import sortBy from 'lodash/sortBy'
 import Fuse from 'fuse.js'
+import theme from './theme'
 import Checkbox from './components/Checkbox'
 
 class App extends Component {
@@ -65,30 +67,32 @@ class App extends Component {
     )
 
     return (
-      <div style={{ width: 360 }}>
-        <input
-          type="text"
-          value={this.state.query}
-          placeholder="Search"
-          onChange={event => this.handleQueryChange(event.target.value)}
-          style={{ width: '100%' }}
-        />
-        {!this.state.loading && extensions.length === 0 ? (
-          <div>No matches found.</div>
-        ) : (
-          extensions.map(({ id, enabled, shortName }) => (
-            <label key={id}>
-              <Checkbox
-                checked={enabled}
-                onChange={event =>
-                  this.handleEnabledChange(id, event.target.checked)
-                }
-              />
-              <span>{shortName}</span>
-            </label>
-          ))
-        )}
-      </div>
+      <ThemeProvider theme={theme}>
+        <div style={{ width: 360 }}>
+          <input
+            type="text"
+            value={this.state.query}
+            placeholder="Search"
+            onChange={event => this.handleQueryChange(event.target.value)}
+            style={{ width: '100%' }}
+          />
+          {!this.state.loading && extensions.length === 0 ? (
+            <div>No matches found.</div>
+          ) : (
+            extensions.map(({ id, enabled, shortName }) => (
+              <label key={id}>
+                <Checkbox
+                  checked={enabled}
+                  onChange={event =>
+                    this.handleEnabledChange(id, event.target.checked)
+                  }
+                />
+                <span>{shortName}</span>
+              </label>
+            ))
+          )}
+        </div>
+      </ThemeProvider>
     )
   }
 }
