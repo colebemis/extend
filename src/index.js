@@ -80,15 +80,16 @@ class App extends Component {
             <div>No matches found.</div>
           ) : (
             extensions.map(({ id, enabled, shortName }) => (
-              <label key={id}>
+              <div key={id}>
                 <Checkbox
+                  id={id}
                   checked={enabled}
                   onChange={event =>
                     this.handleEnabledChange(id, event.target.checked)
                   }
                 />
-                <span>{shortName}</span>
-              </label>
+                <label htmlFor={id}>{shortName}</label>
+              </div>
             ))
           )}
         </div>
