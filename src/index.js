@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import { render } from 'react-dom'
 import { shape, func } from 'prop-types'
-import { ThemeProvider } from 'styled-components'
 import sortBy from 'lodash/sortBy'
 import Fuse from 'fuse.js'
 import theme from './theme'
@@ -67,33 +66,31 @@ class App extends Component {
     )
 
     return (
-      <ThemeProvider theme={theme}>
-        <div style={{ width: 360 }}>
-          <input
-            type="text"
-            value={this.state.query}
-            placeholder="Search"
-            onChange={event => this.handleQueryChange(event.target.value)}
-            style={{ width: '100%' }}
-          />
-          {!this.state.loading && extensions.length === 0 ? (
-            <div>No matches found.</div>
-          ) : (
-            extensions.map(({ id, enabled, shortName }) => (
-              <div key={id}>
-                <Checkbox
-                  id={id}
-                  checked={enabled}
-                  onChange={event =>
-                    this.handleEnabledChange(id, event.target.checked)
-                  }
-                />
-                <label htmlFor={id}>{shortName}</label>
-              </div>
-            ))
-          )}
-        </div>
-      </ThemeProvider>
+      <div style={{ width: 360 }}>
+        <input
+          type="text"
+          value={this.state.query}
+          placeholder="Search"
+          onChange={event => this.handleQueryChange(event.target.value)}
+          style={{ width: '100%' }}
+        />
+        {!this.state.loading && extensions.length === 0 ? (
+          <div>No matches found.</div>
+        ) : (
+          extensions.map(({ id, enabled, shortName }) => (
+            <div key={id}>
+              <Checkbox
+                id={id}
+                checked={enabled}
+                onChange={event =>
+                  this.handleEnabledChange(id, event.target.checked)
+                }
+              />
+              <label htmlFor={id}>{shortName}</label>
+            </div>
+          ))
+        )}
+      </div>
     )
   }
 }

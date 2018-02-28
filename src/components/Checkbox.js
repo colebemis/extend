@@ -3,6 +3,7 @@ import { bool, string, oneOfType, number } from 'prop-types'
 import styled, { css } from 'styled-components'
 import { hideVisually, rgba } from 'polished'
 import { px } from '../utils'
+import { colors, opacities, radius } from '../theme'
 
 const Container = styled.div`
   display: inline-block;
@@ -14,18 +15,16 @@ const HiddenCheckbox = styled.input.attrs({ type: 'checkbox' })`
 
 const Icon = styled.svg`
   fill: none;
-  stroke: ${props => props.theme.colors.white};
+  stroke: ${colors.white};
   stroke-width: 1.5px;
 `
 
 const uncheckedStyles = css`
   background-color: white;
-  border-color: ${props =>
-    rgba(props.theme.colors.black, props.theme.opacities[2])};
+  border-color: ${rgba(colors.black, opacities[2])};
 
   &:hover {
-    border-color: ${props =>
-      rgba(props.theme.colors.black, props.theme.opacities[3])};
+    border-color: ${rgba(colors.black, opacities[3])};
   }
 
   ${Icon} {
@@ -34,8 +33,8 @@ const uncheckedStyles = css`
 `
 
 const checkedStyles = css`
-  background-color: ${props => props.theme.colors.blue};
-  border-color: ${props => props.theme.colors.blue};
+  background-color: ${colors.blue};
+  border-color: ${colors.blue};
 `
 
 const StyledCheckbox = styled.div`
@@ -44,15 +43,14 @@ const StyledCheckbox = styled.div`
   height: ${props => px(props.size)};
   border-width: 1px;
   border-style: solid;
-  border-radius: ${props => px(props.theme.radius)};
+  border-radius: ${px(radius)};
   transition: all 150ms;
 
   ${props => (props.checked ? checkedStyles : uncheckedStyles)};
 
   ${HiddenCheckbox}:focus + & {
-    border-color: ${props => props.theme.colors.blue};
-    box-shadow: 0 0 0 3px
-      ${props => rgba(props.theme.colors.blue, props.theme.opacities[3])};
+    border-color: ${colors.blue};
+    box-shadow: 0 0 0 3px ${rgba(colors.blue, opacities[3])};
   }}
 `
 
