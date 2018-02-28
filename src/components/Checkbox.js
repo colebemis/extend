@@ -59,7 +59,7 @@ const Checkbox = ({ className, checked, size, ...props }) => (
     <HiddenCheckbox checked={checked} {...props} />
     <StyledCheckbox checked={checked} size={size}>
       <Icon viewBox="0 0 24 24">
-        <polyline vector-effect="non-scaling-stroke" points="20 6 9 17 4 12" />
+        <polyline vectorEffect="non-scaling-stroke" points="20 6 9 17 4 12" />
       </Icon>
     </StyledCheckbox>
   </Container>
