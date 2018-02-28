@@ -20,12 +20,12 @@ const Icon = styled.svg`
 `
 
 const uncheckedStyles = css`
-  background-color: white;
-  border-color: ${rgba(colors.black, opacities[2])};
-
-  &:hover {
-    border-color: ${rgba(colors.black, opacities[3])};
-  }
+  background-color: ${props =>
+    props.disabled ? rgba(colors.black, opacities[1]) : colors.white};
+  border-color: ${props =>
+    props.disabled
+      ? rgba(colors.black, opacities[1])
+      : rgba(colors.black, opacities[2])};
 
   ${Icon} {
     visibility: hidden;
@@ -33,8 +33,9 @@ const uncheckedStyles = css`
 `
 
 const checkedStyles = css`
-  background-color: ${colors.blue};
-  border-color: ${colors.blue};
+  background-color: ${props =>
+    props.disabled ? rgba(colors.black, opacities[3]) : colors.blue};
+  border-color: transparent;
 `
 
 const StyledCheckbox = styled.div`
@@ -54,10 +55,10 @@ const StyledCheckbox = styled.div`
   }}
 `
 
-const Checkbox = ({ className, checked, size, ...props }) => (
+const Checkbox = ({ className, checked, disabled, size, ...props }) => (
   <Container className={className}>
-    <HiddenCheckbox checked={checked} {...props} />
-    <StyledCheckbox checked={checked} size={size}>
+    <HiddenCheckbox checked={checked} disabled={disabled} {...props} />
+    <StyledCheckbox checked={checked} disabled={disabled} size={size}>
       <Icon viewBox="0 0 24 24">
         <polyline vectorEffect="non-scaling-stroke" points="20 6 9 17 4 12" />
       </Icon>
@@ -68,12 +69,14 @@ const Checkbox = ({ className, checked, size, ...props }) => (
 Checkbox.propTypes = {
   className: string,
   checked: bool,
+  disabled: bool,
   size: oneOfType([number, string]),
 }
 
 Checkbox.defaultProps = {
   className: '',
   checked: false,
+  disabled: false,
   size: 16,
 }
 
