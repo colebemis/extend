@@ -2,7 +2,7 @@ import React from 'react'
 import { bool, string, oneOfType, number } from 'prop-types'
 import styled, { css } from 'styled-components'
 import { hideVisually, rgba } from 'polished'
-import { px } from '../utils'
+import { toPx } from '../utils'
 import { colors, opacities, radius } from '../theme'
 
 const Container = styled.div`
@@ -40,11 +40,11 @@ const checkedStyles = css`
 
 const StyledCheckbox = styled.div`
   box-sizing: border-box;
-  width: ${props => px(props.size)};
-  height: ${props => px(props.size)};
+  width: ${props => toPx(props.size)};
+  height: ${props => toPx(props.size)};
   border-width: 1px;
   border-style: solid;
-  border-radius: ${px(radius)};
+  border-radius: ${toPx(radius)};
   transition: all 150ms;
 
   ${props => (props.checked ? checkedStyles : uncheckedStyles)};

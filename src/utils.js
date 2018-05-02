@@ -1,2 +1,7 @@
-export const isNumber = n => typeof n === 'number' && !isNaN(n)
-export const px = n => (isNumber(n) ? n + 'px' : n)
+function isNumber(value) {
+  return typeof value === 'number' && !isNaN(value)
+}
+
+export function toPx(value) {
+  return isNumber(value) && value !== 0 ? value + 'px' : value
+}
