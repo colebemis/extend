@@ -1,16 +1,22 @@
 import React, { Component } from 'react'
 import { render } from 'react-dom'
 import { shape, func } from 'prop-types'
+import { Div } from 'glamorous'
 import { css } from 'glamor'
 import sortBy from 'lodash/sortBy'
 import Fuse from 'fuse.js'
 import theme from './theme'
-import Extension from './components/Extension'
+import SearchInput from './components/SearchInput'
+import ExtensionList from './components/ExtensionList'
 
 css.global('body', {
+  boxSizing: 'border-box',
   margin: 0,
 })
 
+css.global('*, *:before, *:after', {
+  boxSizing: 'inherit',
+})
 class App extends Component {
   static propTypes = {
     chrome: shape({
@@ -74,30 +80,30 @@ class App extends Component {
     const extensions = this.searchExtensions(this.state.extensions, query)
 
     return (
-      <div style={{ width: 360 }}>
-        <input
-          type="text"
-          value={query}
-          placeholder={
-            isLoading
-              ? 'Search extensions'
-              : `Search ${extensions.length} extensions`
-          }
-          onChange={event => this.handleQueryChange(event.target.value)}
-          style={{ width: '100%' }}
-        />
-        {!isLoading && extensions.length === 0 ? (
-          <div>No matches found.</div>
-        ) : (
-          extensions.map(extension => (
-            <Extension
-              key={extension.id}
-              extension={extension}
+      <Div display="flex" flexDirection="column" width={360} maxHeight={600}>
+        <Div flex="0 0 auto">
+          <SearchInput
+            type="text"
+            value={query}
+            placeholder={
+              isLoading
+                ? 'Search extensions'
+                : `Search ${extensions.length} extensions`
+            }
+            onChange={event => this.handleQueryChange(event.target.value)}
+          />
+        </Div>
+        <Div flex="1 1 auto" overflowY="auto">
+          {!isLoading && extensions.length === 0 ? (
+            <div>No matches found.</div>
+          ) : (
+            <ExtensionList
+              extensions={extensions}
               setEnabled={this.setEnabled}
             />
-          ))
-        )}
-      </div>
+          )}
+        </Div>
+      </Div>
     )
   }
 }

@@ -9,7 +9,7 @@ function getIconUrl(icons = []) {
   return icons.length > 0 ? icons[0].url : null
 }
 
-function Extension({ extension, setEnabled }) {
+function ExtensionItem({ extension, setEnabled }) {
   return (
     <Div padding={joinSpacing(spacing[1], spacing[3])}>
       <Label display="flex" alignItems="center">
@@ -20,9 +20,10 @@ function Extension({ extension, setEnabled }) {
         <Img
           src={getIconUrl(extension.icons)}
           width={16}
+          boxSizing="content-box"
           paddingLeft={spacing[3]}
-          filter={extension.enabled ? 'none' : 'grayscale(100%)'}
           opacity={extension.enabled ? 1 : opacities[4]}
+          filter={extension.enabled ? 'none' : 'grayscale(100%)'}
         />
         <Span
           paddingLeft={spacing[1]}
@@ -36,4 +37,4 @@ function Extension({ extension, setEnabled }) {
   )
 }
 
-export default Extension
+export default ExtensionItem
