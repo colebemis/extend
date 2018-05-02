@@ -23,12 +23,16 @@ class App extends Component {
   }
 
   componentDidMount() {
-    this.props.chrome.management.getAll(extensions =>
-      this.setState({
-        loading: false,
-        extensions: sortBy(extensions, 'shortName'),
-      }),
-    )
+    // setTimeout prevents popup window from getting stuck at the wrong size
+    // https://bugs.chromium.org/p/chromium/issues/detail?id=428044
+    setTimeout(() => {
+      this.props.chrome.management.getAll(extensions =>
+        this.setState({
+          loading: false,
+          extensions: sortBy(extensions, 'shortName'),
+        }),
+      )
+    }, 200)
   }
 
   handleQueryChange = query => this.setState({ query })
