@@ -1,7 +1,7 @@
 import React from 'react'
 import { Div, Label, Img, Span } from 'glamorous'
 import find from 'lodash/find'
-import { spacing } from '../theme'
+import { spacing, opacities } from '../theme'
 import { joinSpacing } from '../utils'
 import Checkbox from './Checkbox'
 
@@ -21,8 +21,14 @@ function Extension({ extension, setEnabled }) {
           src={getIconUrl(extension.icons)}
           width={16}
           paddingLeft={spacing[3]}
+          filter={extension.enabled ? 'none' : 'grayscale(100%)'}
+          opacity={extension.enabled ? 1 : opacities[4]}
         />
-        <Span paddingLeft={spacing[1]} fontSize={14}>
+        <Span
+          paddingLeft={spacing[1]}
+          fontSize={14}
+          opacity={extension.enabled ? 1 : opacities[4]}
+        >
           {extension.shortName}
         </Span>
       </Label>
