@@ -1,5 +1,7 @@
+export const spacing = [4, 8, 12, 16, 24, 32, 64, 128, 256, 512]
+
 export const colors = {
-  blue: '#05f',
+  blue: '#07f',
   black: '#000',
   white: '#fff',
 }
