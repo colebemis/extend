@@ -1,10 +1,15 @@
 import React, { Component } from 'react'
 import { render } from 'react-dom'
 import { shape, func } from 'prop-types'
+import { css } from 'glamor'
 import sortBy from 'lodash/sortBy'
 import Fuse from 'fuse.js'
 import theme from './theme'
-import Checkbox from './components/Checkbox'
+import Extension from './components/Extension'
+
+css.global('body', {
+  margin: 0,
+})
 
 class App extends Component {
   static propTypes = {
@@ -37,14 +42,14 @@ class App extends Component {
 
   handleQueryChange = query => this.setState({ query })
 
-  handleEnabledChange = (id, enabled) => {
+  setEnabled = (id, enabled) => {
     this.props.chrome.management.setEnabled(id, enabled, () => {
-      this.setState({
-        extensions: this.state.extensions.map(
+      this.setState(state => ({
+        extensions: state.extensions.map(
           extension =>
             extension.id === id ? { ...extension, ...{ enabled } } : extension,
         ),
-      })
+      }))
     })
   }
 
@@ -80,16 +85,12 @@ class App extends Component {
         {!isLoading && extensions.length === 0 ? (
           <div>No matches found.</div>
         ) : (
-          extensions.map(({ id, enabled, shortName }) => (
-            <label key={id}>
-              <Checkbox
-                checked={enabled}
-                onChange={event =>
-                  this.handleEnabledChange(id, event.target.checked)
-                }
-              />
-              <span>{shortName}</span>
-            </label>
+          extensions.map(extension => (
+            <Extension
+              key={extension.id}
+              extension={extension}
+              setEnabled={this.setEnabled}
+            />
           ))
         )}
       </div>
