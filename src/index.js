@@ -17,7 +17,7 @@ class App extends Component {
   }
 
   state = {
-    loading: true,
+    isLoading: true,
     query: '',
     extensions: [],
   }
@@ -28,7 +28,7 @@ class App extends Component {
     setTimeout(() => {
       this.props.chrome.management.getAll(extensions =>
         this.setState({
-          loading: false,
+          isLoading: false,
           extensions: sortBy(extensions, 'shortName'),
         }),
       )
@@ -64,21 +64,20 @@ class App extends Component {
   }
 
   render() {
-    const extensions = this.searchExtensions(
-      this.state.extensions,
-      this.state.query,
-    )
+    const { isLoading, query } = this.state
+
+    const extensions = this.searchExtensions(this.state.extensions, query)
 
     return (
       <div style={{ width: 360 }}>
         <input
           type="text"
-          value={this.state.query}
+          value={query}
           placeholder="Search"
           onChange={event => this.handleQueryChange(event.target.value)}
           style={{ width: '100%' }}
         />
-        {!this.state.loading && extensions.length === 0 ? (
+        {!isLoading && extensions.length === 0 ? (
           <div>No matches found.</div>
         ) : (
           extensions.map(({ id, enabled, shortName }) => (
