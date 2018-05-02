@@ -78,7 +78,11 @@ class App extends Component {
         <input
           type="text"
           value={query}
-          placeholder="Search"
+          placeholder={
+            isLoading
+              ? 'Search extensions'
+              : `Search ${extensions.length} extensions`
+          }
           onChange={event => this.handleQueryChange(event.target.value)}
           style={{ width: '100%' }}
         />
